@@ -3,6 +3,15 @@
 
 from openupgradelib import openupgrade
 
+def delete_website_menus(cr):
+    openupgrade.logged_query(
+        cr,
+        """
+        DELETE FROM website_menu
+        where name = 'Presentations'
+        """,
+    )
+
 
 @openupgrade.migrate()
 def migrate(env, version):
@@ -13,3 +22,4 @@ def migrate(env, version):
     openupgrade.load_data(
         env.cr, 'website_sale', 'migrations/11.0.1.0/noupdate_changes.xml',
     )
+    delete_website_menus(env.cr)

@@ -56,3 +56,12 @@ def migrate(env, version):
              'monetary', False, 'sale'),
         ]
     )
+    # adding below additional code to prevent migration errors due to missed code changes.
+    openupgrade.rename_columns(
+        env.cr,
+        {
+            "sale_order": [
+                ("project_id", "analytic_account_id,"),
+            ]
+        },
+    )

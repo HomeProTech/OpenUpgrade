@@ -48,6 +48,18 @@ def set_calendar_event_res_model(env):
             ],
         )
 
+def delete_existing_calendar_event_type_id(cr):
+    cr.execute(
+        """
+        delete from calendar_event_type 
+        WHERE name in ('Customer Meeting', 
+        'Internal Meeting', 
+        'Off-site Meeting',
+        'Open Discussion', 
+        'Feedback Meeting');
+    """
+    )
+
 
 @openupgrade.migrate()
 def migrate(env, version):
@@ -55,3 +67,4 @@ def migrate(env, version):
     update_user_ids(cr)
     cleanup_translations(cr)
     set_calendar_event_res_model(env)
+    delete_existing_calendar_event_type_id(cr)

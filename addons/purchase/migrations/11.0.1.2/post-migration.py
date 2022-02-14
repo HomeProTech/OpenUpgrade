@@ -64,7 +64,7 @@ def fill_purchase_order_picking_fields(env):
         env.cr, """
         INSERT INTO account_invoice_purchase_order_rel
         (purchase_order_id, account_invoice_id)
-        SELECT order_id, invoice_id
+        SELECT pol.order_id, ail.invoice_id
         FROM purchase_order_line pol,
             account_invoice_line ail
         WHERE ail.purchase_line_id = pol.id

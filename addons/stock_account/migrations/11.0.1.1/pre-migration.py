@@ -31,7 +31,8 @@ def update_fifo_cost_method(env):
 
 def rename_to_refund_so(env):
     """Rename `to_refund_so` if exists and update field definition."""
-    if openupgrade.column_exists(env.cr, 'stock_move', 'to_refund_so'):
+    if openupgrade.column_exists(env.cr, 'stock_move', 'to_refund_so')\
+        and not openupgrade.column_exists(env.cr, "stock_move", "to_refund"):
         openupgrade.rename_fields(
             env, [('stock.move', 'stock_move', 'to_refund_so', 'to_refund')],
         )

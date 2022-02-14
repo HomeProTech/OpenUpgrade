@@ -37,24 +37,25 @@ def convert_crm_activity_types(env):
                 "SET %s = %s WHERE id = %s",
                 (column_name, old_id, env.ref(new_xml_id).id),
             )
-    openupgrade.logged_query(
-        env.cr, """
-        INSERT INTO mail_activity_type
-            (name, sequence, res_model_id, category, days,
-             create_date, create_uid, write_uid, write_date, %s)
-        SELECT
-            mms.name, ca.sequence, im.id, 'default', ca.days,
-            ca.create_date, ca.create_uid, ca.write_uid, ca.write_date, ca.id
-        FROM
-            crm_activity AS ca,
-            mail_message_subtype AS mms,
-            ir_model AS im
-        WHERE
-             mms.id = ca.subtype_id AND
-             im.model = 'crm.lead' AND
-             ca.id NOT IN %s
-        """, (column_name, tuple(migrated_ids), )
-    )
+    if any(migrated_ids):    
+        openupgrade.logged_query(
+            env.cr, """
+            INSERT INTO mail_activity_type
+                (name, sequence, res_model_id, category, days,
+                create_date, create_uid, write_uid, write_date, %s)
+            SELECT
+                mms.name, ca.sequence, im.id, 'default', ca.days,
+                ca.create_date, ca.create_uid, ca.write_uid, ca.write_date, ca.id
+            FROM
+                crm_activity AS ca,
+                mail_message_subtype AS mms,
+                ir_model AS im
+            WHERE
+                mms.id = ca.subtype_id AND
+                im.model = 'crm.lead' AND
+                ca.id NOT IN %s
+            """, (column_name, tuple(migrated_ids), )
+        )
 
 
 def convert_crm_lead_activities(env):

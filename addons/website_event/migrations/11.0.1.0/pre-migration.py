@@ -9,4 +9,5 @@ _field_renames = [
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.rename_fields(env, _field_renames)
+    if not openupgrade.column_exists(env.cr, "event_event", "show_menu"):
+        openupgrade.rename_fields(env, _field_renames)
