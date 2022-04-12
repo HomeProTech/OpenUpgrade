@@ -51,6 +51,7 @@ renamed_modules = {
     "web_advanced_search_x2x": "web_advanced_search",
     # homepro_custom
     "ursa_stock_picking_wave": "ursa_stock_picking_batch",
+    "osi_merge_task_do": "homepro_hr_department",
 }
 
 merged_modules = {
@@ -125,6 +126,14 @@ merged_modules = {
     # OCA/bank-statement-import
     "account_bank_statement_import_camt": "account_bank_statement_import_camt_oca",
     "product_configurator_wizard": "product_configurator",
+    # Custom-addons
+    "ursa_analytic_department": "homepro_hr_department",
+    "analytic_base_department": "homepro_hr_department",
+    "project_department": "homepro_hr_department",
+    "osi_purchase_analytic": "homepro_hr_department",
+    "billy_crm_lead_salesupport": "billy_crm_lead_cms_corner",
+    "billy_project_timeline_menu": "web_timeline_osi_user_filter",
+    "billy_delivery_order_cancel": "osi_delivery_order_return",
 }
 
 renamed_models = {
