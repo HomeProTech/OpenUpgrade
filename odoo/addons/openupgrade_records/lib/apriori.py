@@ -52,6 +52,7 @@ renamed_modules = {
     # homepro_custom
     "ursa_stock_picking_wave": "ursa_stock_picking_batch",
     "osi_merge_task_do": "homepro_hr_department",
+    "billy_pdf_reports": "homepro_reports",
 }
 
 merged_modules = {
@@ -134,6 +135,9 @@ merged_modules = {
     "billy_crm_lead_salesupport": "billy_crm_lead_cms_corner",
     "billy_project_timeline_menu": "web_timeline_osi_user_filter",
     "billy_delivery_order_cancel": "osi_delivery_order_return",
+    "ursa_site_cmis": "cmis_enhancements",
+    "account_check_report": "homepro_reports",
+    "ursa_us_check_layout": "homepro_reports",
 }
 
 renamed_models = {
