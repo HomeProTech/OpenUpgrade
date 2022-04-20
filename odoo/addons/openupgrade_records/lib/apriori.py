@@ -51,9 +51,9 @@ renamed_modules = {
     "web_advanced_search_x2x": "web_advanced_search",
     # homepro_custom
     "ursa_stock_picking_wave": "ursa_stock_picking_batch",
-    "osi_merge_task_do": "homepro_hr_department",
-    "billy_pdf_reports": "homepro_reports",
-    "osi_site_smart_button": "homepro_res_partner_enhance",
+    # "osi_merge_task_do": "homepro_hr_department",
+    # "billy_pdf_reports": "homepro_reports",
+    # "osi_site_smart_button": "homepro_res_partner_enhance",
 }
 
 merged_modules = {
@@ -129,20 +129,20 @@ merged_modules = {
     "account_bank_statement_import_camt": "account_bank_statement_import_camt_oca",
     "product_configurator_wizard": "product_configurator",
     # Custom-addons
-    "ursa_analytic_department": "homepro_hr_department",
-    "analytic_base_department": "homepro_hr_department",
-    "project_department": "homepro_hr_department",
-    "osi_purchase_analytic": "homepro_hr_department",
-    "billy_crm_lead_salesupport": "billy_crm_lead_cms_corner",
-    "billy_project_timeline_menu": "web_timeline_osi_user_filter",
-    "billy_delivery_order_cancel": "osi_delivery_order_return",
-    "ursa_site_cmis": "cmis_enhancements",
-    "account_check_report": "homepro_reports",
-    "ursa_us_check_layout": "homepro_reports",
-    "billy_community_line_view_ext": "ursa_partner_builder",
-    "osi_tech_can_install": "homepro_res_partner_enhance",
-    "ursa_1099": "homepro_res_partner_enhance",
-    "partner_aging_any_date": "homepro_res_partner_enhance",
+    # "ursa_analytic_department": "homepro_hr_department",
+    # "analytic_base_department": "homepro_hr_department",
+    # "project_department": "homepro_hr_department",
+    # "osi_purchase_analytic": "homepro_hr_department",
+    # "billy_crm_lead_salesupport": "billy_crm_lead_cms_corner",
+    # "billy_project_timeline_menu": "web_timeline_osi_user_filter",
+    # "billy_delivery_order_cancel": "osi_delivery_order_return",
+    # "ursa_site_cmis": "cmis_enhancements",
+    # "account_check_report": "homepro_reports",
+    # "ursa_us_check_layout": "homepro_reports",
+    # "billy_community_line_view_ext": "ursa_partner_builder",
+    # "osi_tech_can_install": "homepro_res_partner_enhance",
+    # "ursa_1099": "homepro_res_partner_enhance",
+    # "partner_aging_any_date": "homepro_res_partner_enhance",
 }
 
 renamed_models = {
