@@ -53,6 +53,7 @@ renamed_modules = {
     "ursa_stock_picking_wave": "ursa_stock_picking_batch",
     "osi_merge_task_do": "homepro_hr_department",
     "billy_pdf_reports": "homepro_reports",
+    "osi_site_smart_button": "homepro_res_partner_enhance",
 }
 
 merged_modules = {
@@ -138,6 +139,10 @@ merged_modules = {
     "ursa_site_cmis": "cmis_enhancements",
     "account_check_report": "homepro_reports",
     "ursa_us_check_layout": "homepro_reports",
+    "billy_community_line_view_ext": "ursa_partner_builder",
+    "osi_tech_can_install": "homepro_res_partner_enhance",
+    "ursa_1099": "homepro_res_partner_enhance",
+    "partner_aging_any_date": "homepro_res_partner_enhance",
 }
 
 renamed_models = {
