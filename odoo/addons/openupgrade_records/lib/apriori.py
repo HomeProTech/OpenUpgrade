@@ -54,6 +54,7 @@ renamed_modules = {
     "osi_merge_task_do": "homepro_hr_department",
     "billy_pdf_reports": "homepro_reports",
     "osi_site_smart_button": "homepro_res_partner_enhance",
+    "hp_stock_location_wizard": "homepro_stock_location",
 }
 
 merged_modules = {
@@ -144,6 +145,7 @@ merged_modules = {
     "ursa_1099": "homepro_res_partner_enhance",
     "partner_aging_any_date": "homepro_res_partner_enhance",
     "billy_res_partner_enhance": "homepro_res_partner_enhance",
+    "billy_truck_stock": "homepro_stock_location",
     # "ursa_project_task_report": "homepro_reports",
     # "ursa_analytic_warehouse": "ursa_branch",
     # "osi_do_anglo_ext": "homepro_account",
