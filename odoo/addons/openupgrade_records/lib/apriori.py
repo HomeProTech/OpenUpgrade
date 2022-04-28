@@ -143,8 +143,10 @@ merged_modules = {
     "osi_tech_can_install": "homepro_res_partner_enhance",
     "ursa_1099": "homepro_res_partner_enhance",
     "partner_aging_any_date": "homepro_res_partner_enhance",
+    "billy_res_partner_enhance": "homepro_res_partner_enhance",
     # "ursa_project_task_report": "homepro_reports",
     # "ursa_analytic_warehouse": "ursa_branch",
+    # "osi_do_anglo_ext": "homepro_account",
 }
 
 renamed_models = {
