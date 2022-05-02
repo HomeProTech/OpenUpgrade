@@ -152,6 +152,11 @@ merged_modules = {
     "ursa_analytic_salesperson": "ursa_analytic",
     "ursa_analytic_product_category": "ursa_analytic",
     "osi_bom_component_validation": "homepro_mrp",
+    "homepro_mrp_plm_update_pickings": "homepro_mrp",
+    "homepro_quotation_before_invoice": "ursa_invoice_on_taskdone",
+    "ursa_remove_register_option_website": "billy_web_layout_enhance",
+    "osi_website_enhancements": "billy_web_layout_enhance",
+    "billy_sale_cos_enhance": "homepro_sale",
 }
 
 renamed_models = {
