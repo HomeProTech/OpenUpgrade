@@ -55,6 +55,7 @@ renamed_modules = {
     "billy_pdf_reports": "homepro_reports",
     "osi_site_smart_button": "homepro_res_partner_enhance",
     "hp_stock_location_wizard": "homepro_stock_location",
+    "web_kanban_custom": "homepro_web_custom",
 }
 
 merged_modules = {
@@ -157,6 +158,10 @@ merged_modules = {
     "ursa_remove_register_option_website": "billy_web_layout_enhance",
     "osi_website_enhancements": "billy_web_layout_enhance",
     "billy_sale_cos_enhance": "homepro_sale",
+    "homepro_customer_signed_order_status": "ursa_sales_order_community",
+    "osi_archive_warning": "homepro_web_custom",
+    "osi_account_move_analytic": "ursa_account_move_enhance",
+    "homepro_product_labor_config": "homepro_est_planned_hrs",
 }
 
 renamed_models = {
