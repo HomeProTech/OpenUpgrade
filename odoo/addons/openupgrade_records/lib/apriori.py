@@ -160,8 +160,11 @@ merged_modules = {
     "billy_sale_cos_enhance": "homepro_sale",
     "homepro_customer_signed_order_status": "ursa_sales_order_community",
     "osi_archive_warning": "homepro_web_custom",
+    "osi_increase_search_limit": "homepro_web_custom",
     "osi_account_move_analytic": "ursa_account_move_enhance",
     "homepro_product_labor_config": "homepro_est_planned_hrs",
+    "osi_stock_account_reconcile": "ursa_account_move_enhance",
+    "osi_po_billing_state": "ursa_delivery_order_enhance",
 }
 
 renamed_models = {
