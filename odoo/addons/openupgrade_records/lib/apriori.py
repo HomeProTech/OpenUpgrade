@@ -165,8 +165,12 @@ merged_modules = {
     "homepro_product_labor_config": "homepro_est_planned_hrs",
     "osi_stock_account_reconcile": "ursa_account_move_enhance",
     "osi_po_billing_state": "ursa_delivery_order_enhance",
+    "billy_partner_helpdesk_smartbutton": "osi_helpdesk_ticket",
+    "account_move_chatter": "ursa_accoun_move_enhance",
+    "account_check_report_email": "homepro_reports",
+    "account_invoice_overpaid": "ursa_accounting_enhancements",
+    "osi_multiple_invoice_payment": "ursa_accounting_enhancements",
 }
-
 renamed_models = {
     "base.action.rule": "base.automation",
     "base.action.rule.lead.test": "base.automation.lead.test",
