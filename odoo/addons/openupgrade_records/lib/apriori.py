@@ -170,6 +170,7 @@ merged_modules = {
     "account_check_report_email": "homepro_reports",
     "account_invoice_overpaid": "ursa_accounting_enhancements",
     "osi_multiple_invoice_payment": "ursa_accounting_enhancements",
+    "osi_search_payment": "ursa_invoice_on_taskdone",
 }
 renamed_models = {
     "base.action.rule": "base.automation",
