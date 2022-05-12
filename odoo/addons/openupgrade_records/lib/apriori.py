@@ -171,6 +171,7 @@ merged_modules = {
     "account_invoice_overpaid": "ursa_accounting_enhancements",
     "osi_multiple_invoice_payment": "ursa_accounting_enhancements",
     "osi_search_payment": "ursa_invoice_on_taskdone",
+    "billy_crm_lead_cms_corner": "ursa_crm_lead_enhance",
 }
 renamed_models = {
     "base.action.rule": "base.automation",
