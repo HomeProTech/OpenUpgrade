@@ -61,7 +61,7 @@ def migrate(env, version):
         env.cr,
         {
             "sale_order": [
-                ("project_id", "analytic_account_id,"),
+                ("project_id", "analytic_account_id"),
             ]
         },
     )
