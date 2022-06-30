@@ -136,6 +136,7 @@ merged_modules = {
     "project_department": "homepro_hr_department",
     "osi_purchase_analytic": "homepro_hr_department",
     "billy_crm_lead_salesupport": "billy_crm_lead_cms_corner",
+    "ursa_task_timeline": "web_timeline_osi_user_filter",
     "billy_project_timeline_menu": "web_timeline_osi_user_filter",
     "billy_delivery_order_cancel": "osi_delivery_order_return",
     "ursa_site_cmis": "cmis_enhancements",
