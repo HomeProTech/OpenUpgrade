@@ -107,8 +107,8 @@ def fill_account_invoice_line_total(env):
     openupgrade.logged_query(
         env.cr, """
         UPDATE account_invoice_line ail
-        SET price_total = round(line.price_unit * (1 - (line.discount or 0.0) / 100.0) * quantity, CEIL(LOG(1.0 / cur.rounding))::INTEGER) + round(
-            round(line.price_unit * (1 - (line.discount or 0.0) / 100.0) * quantity, CEIL(LOG(1.0 / cur.rounding))::INTEGER) *
+        SET price_total = round(ail.price_unit * ail.quantity * (1 - COALESCE(ail.discount, 0.0) / 100.0), CEIL(LOG(1.0 / cur.rounding))::INTEGER) + round(
+            round(ail.price_unit * ail.quantity * (1 - COALESCE(ail.discount, 0.0) / 100.0), CEIL(LOG(1.0 / cur.rounding))::INTEGER) *
             at.amount / 100.0, CEIL(LOG(1.0 / cur.rounding))::INTEGER)
         FROM account_tax at,
             account_invoice_line_tax rel,
