@@ -100,25 +100,26 @@ def fill_account_invoice_line_total(env):
                 AND cur.id = ai.currency_id
                 AND ail.id IN %s""", (tuple(simple_lines.ids), ),
         )
-    # Compute the rest (which should be minority) with regular method
+     # Compute the rest of the lines which are majority for homepro.
     rest_lines = line_obj.search([]) - empty_lines - simple_lines
     openupgrade.logger.debug("Compute the rest of the account.invoice.line"
                              "totals: %s" % len(rest_lines))
-    for line in rest_lines:
-        # avoid error on taxes with other type of computation ('code' for
-        # example, provided by module `account_tax_python`). We will need to
-        # add the computation on the corresponding module post-migration.
-        types = ['percent', 'fixed', 'group', 'division']
-        if any(x.amount_type not in types for x in line.invoice_line_tax_ids):
-            continue
-        # This has been extracted from `_compute_price` method
-        currency = line.invoice_id and line.invoice_id.currency_id or None
-        price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-        taxes = line.invoice_line_tax_ids.compute_all(
-            price, currency, line.quantity, product=line.product_id,
-            partner=line.invoice_id.partner_id,
-        )
-        line.price_total = taxes['total_included']
+    openupgrade.logged_query(
+        env.cr, """
+        UPDATE account_invoice_line ail
+        SET price_total = round(line.price_unit * (1 - (line.discount or 0.0) / 100.0) * quantity, CEIL(LOG(1.0 / cur.rounding))::INTEGER) + round(
+            round(line.price_unit * (1 - (line.discount or 0.0) / 100.0) * quantity, CEIL(LOG(1.0 / cur.rounding))::INTEGER) *
+            at.amount / 100.0, CEIL(LOG(1.0 / cur.rounding))::INTEGER)
+        FROM account_tax at,
+            account_invoice_line_tax rel,
+            account_invoice ai,
+            res_currency cur
+        WHERE ail.id = rel.invoice_line_id
+            AND at.id = rel.tax_id
+            AND ai.id = ail.invoice_id
+            AND cur.id = ai.currency_id
+            AND ail.id IN %s""", (tuple(rest_lines.ids), ),
+    )
     openupgrade.logger.debug("Compute finished")
 
 
