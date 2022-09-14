@@ -49,18 +49,9 @@ def fill_account_invoice_line_total(env):
     """Try to compute the field `price_total` in a more optimized way for
     speeding up the migration.
     """
-    # We first set price_subtotal for lines without taxes
     line_obj = env['account.invoice.line']
-    empty_lines = line_obj.search([('invoice_line_tax_ids', '=', 'False')])
-    if empty_lines:
-        openupgrade.logged_query(
-            env.cr, """
-            UPDATE account_invoice_line
-            SET price_total = price_subtotal
-            WHERE id IN %s""", (tuple(empty_lines.ids), )
-        )
-    # Now we compute easily the lines with only 1 tax, no included in price,
-    # and that tax is simply a percentage (which are most of the cases)
+    # Computing simple lines with only 1 tax, not included in price,
+    # and that tax is simply a percentage (which is most of the case for homepro)
     env.cr.execute(
         """SELECT id FROM (
             SELECT ail.id,
@@ -83,6 +74,8 @@ def fill_account_invoice_line_total(env):
     )
     simple_lines = line_obj.browse([x[0] for x in env.cr.fetchall()])
     if simple_lines:
+        openupgrade.logger.debug("simple lines with only one mapped tax_id in account.invoice.line"
+                             "total: %s" % len(simple_lines))
         openupgrade.logged_query(
             env.cr, """
             UPDATE account_invoice_line ail
@@ -100,25 +93,52 @@ def fill_account_invoice_line_total(env):
                 AND cur.id = ai.currency_id
                 AND ail.id IN %s""", (tuple(simple_lines.ids), ),
         )
-    # Compute the rest (which should be minority) with regular method
-    rest_lines = line_obj.search([]) - empty_lines - simple_lines
-    openupgrade.logger.debug("Compute the rest of the account.invoice.line"
-                             "totals: %s" % len(rest_lines))
-    for line in rest_lines:
-        # avoid error on taxes with other type of computation ('code' for
-        # example, provided by module `account_tax_python`). We will need to
-        # add the computation on the corresponding module post-migration.
-        types = ['percent', 'fixed', 'group', 'division']
-        if any(x.amount_type not in types for x in line.invoice_line_tax_ids):
-            continue
-        # This has been extracted from `_compute_price` method
-        currency = line.invoice_id and line.invoice_id.currency_id or None
-        price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-        taxes = line.invoice_line_tax_ids.compute_all(
-            price, currency, line.quantity, product=line.product_id,
-            partner=line.invoice_id.partner_id,
+    env.cr.execute(
+        """
+        SELECT count(*) FROM account_invoice_line_tax
+        """
+    )
+    result = env.cr.fetchall()[0] # eg. result = [(86462,)]
+    lines_with_mapped_tax_id = result[0]
+    if lines_with_mapped_tax_id == len(simple_lines):
+        openupgrade.logger.debug("Setting price_total as price_subtotal for lines that do not have"
+                                " any tax_id mappings. Lines with mapped tax_ids are equal to simple lines")
+        rest_lines = line_obj.search([]) - simple_lines
+        openupgrade.logged_query(env.cr, """
+            UPDATE account_invoice_line
+                SET price_total = price_subtotal
+                WHERE id IN %s""", (tuple(rest_lines.ids), )
         )
-        line.price_total = taxes['total_included']
+    else:
+        empty_lines = line_obj.search([('invoice_line_tax_ids', '=', 'False')])
+        if empty_lines:
+            openupgrade.logger.debug("empty lines without mapped tax_id in account.invoice.line"
+                                "total: %s" % len(empty_lines))
+            openupgrade.logged_query(
+                env.cr, """
+                UPDATE account_invoice_line
+                SET price_total = price_subtotal
+                WHERE id IN %s""", (tuple(empty_lines.ids), )
+            )
+        # Compute the rest (which should be minority) with regular method
+        rest_lines = line_obj.search([]) - empty_lines - simple_lines
+        openupgrade.logger.debug("Compute the rest of the account.invoice.line"
+                                "totals: %s" % len(rest_lines))
+        for line in rest_lines:
+            # avoid error on taxes with other type of computation ('code' for
+            # example, provided by module `account_tax_python`). We will need to
+            # add the computation on the corresponding module post-migration.
+            types = ['percent', 'fixed', 'group', 'division']
+            if any(x.amount_type not in types for x in line.invoice_line_tax_ids):
+                continue
+            # This has been extracted from `_compute_price` method
+            currency = line.invoice_id and line.invoice_id.currency_id or None
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.invoice_line_tax_ids.compute_all(
+                price, currency, line.quantity, product=line.product_id,
+                partner=line.invoice_id.partner_id,
+            )
+            line.price_total = taxes['total_included']
     openupgrade.logger.debug("Compute finished")
 
 
