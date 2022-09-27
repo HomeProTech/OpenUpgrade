@@ -4,6 +4,39 @@ from openupgradelib import openupgrade
 from psycopg2.extensions import AsIs
 
 
+def update_done_move_store_attribute(cr):
+    openupgrade.logger.debug("updating stock.move.line done_move field store attribute as True.")
+    openupgrade.logged_query(
+        cr, """
+        UPDATE ir_model_fields SET store = true 
+        WHERE model = 'stock.move.line' AND name = 'done_move'
+        """
+    )
+
+def store_stock_move_line_done_move(cr):
+    # cr.execute(
+    #     """
+    #     select column_name from information_schema.columns
+    #         where table_name = 'stock_move_line'
+    #     """
+    # )
+    # result = cr.fetchall()[0]
+    # if 'done_move' not in result:
+    openupgrade.logger.debug("Adding done_move column to stock_move_line table.")
+    openupgrade.logged_query(
+        cr, """
+        ALTER TABLE stock_move_line
+        ADD COLUMN done_move BOOLEAN;
+        """
+    )
+    openupgrade.logged_query(
+        cr, """
+        UPDATE stock_move_line sml SET done_move = 
+            (SELECT is_done FROM stock_move WHERE id = sml.move_id) 
+        WHERE move_id IS NOT NULL;
+        """
+    )
+
 def set_stock_move_created_production_id(cr):
     """Migrate the created production order to the destination move"""
     openupgrade.logged_query(
@@ -222,6 +255,8 @@ def fill_stock_move_line_consume_rel(cr):
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     cr = env.cr
+    update_done_move_store_attribute(cr)
+    store_stock_move_line_done_move(cr)
     set_stock_move_created_production_id(cr)
     fill_mrp_document(cr)
     create_stock_move_lines_from_stock_move_lots(env)
