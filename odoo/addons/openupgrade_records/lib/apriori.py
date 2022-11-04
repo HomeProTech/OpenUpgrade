@@ -7,6 +7,9 @@ renamed_modules = {
     'base_vat_autocomplete': 'partner_autocomplete',
     'mrp_repair': 'repair',
     'product_extended': 'mrp_bom_cost',
+    #Enterprise
+    'account_batch_deposit':'account_batch_payment',
+    'website_sign':'sign',
     # OCA/account-budgeting
     'account_budget': 'account_budget_oca',
     # OCA/account-payment
