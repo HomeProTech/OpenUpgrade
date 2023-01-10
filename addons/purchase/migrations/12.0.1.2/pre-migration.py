@@ -73,4 +73,4 @@ def fill_purchase_order_user_id(cr):
 def migrate(env, version):
     fill_purchase_order_user_id(env.cr)
     precompute_pol_product_uom_qty(env)
-    openupgrade.rename_xmlids(env.cr, xmlid_renames)
+    # openupgrade.rename_xmlids(env.cr, xmlid_renames)
