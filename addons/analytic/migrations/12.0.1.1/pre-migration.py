@@ -23,5 +23,5 @@ def migrate_account_analytic_distribution_pre(cr):
 
 @openupgrade.migrate(use_env=False)
 def migrate(cr, version):
-    openupgrade.copy_columns(cr, column_copies)
+    # openupgrade.copy_columns(cr, column_copies)
     migrate_account_analytic_distribution_pre(cr)

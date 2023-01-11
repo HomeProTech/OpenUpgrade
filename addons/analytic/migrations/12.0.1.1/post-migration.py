@@ -6,24 +6,27 @@ from openupgradelib import openupgrade
 from psycopg2 import sql
 
 
-def fill_account_analytic_line_company_id(cr):
+def update_analytic_line_fields_store_attribute(cr):
     openupgrade.logged_query(
-        cr, """UPDATE account_analytic_line aal
-        SET company_id = aaa.company_id
-        FROM account_analytic_account aaa
-        WHERE aal.account_id = aaa.id
+        cr, """
+        UPDATE ir_model_fields SET store = true 
+        WHERE model = 'account.analytic.line' AND name in ('company_id')
         """,
     )
 
+    # def fill_account_analytic_line_company_id(cr):
+    #     openupgrade.logged_query(
+    #         cr, """UPDATE account_analytic_line aal
+    #         SET company_id = 1
+    #         """,
+    #     )
 
-def fill_account_analytic_line_currency_id(cr):
-    openupgrade.logged_query(
-        cr, """UPDATE account_analytic_line aal
-        SET currency_id = rc.currency_id
-        FROM res_company rc
-        WHERE aal.company_id = rc.id
-        """,
-    )
+    # def fill_account_analytic_line_currency_id(cr):
+    #     openupgrade.logged_query(
+    #         cr, """UPDATE account_analytic_line aal
+    #         SET currency_id = 3
+    #         """,
+    #     )
 
 
 def migrate_account_analytic_distribution_post(cr):
@@ -94,6 +97,5 @@ def migrate_account_analytic_distribution_post(cr):
 
 @openupgrade.migrate(use_env=False)
 def migrate(cr, version):
-    fill_account_analytic_line_company_id(cr)
-    fill_account_analytic_line_currency_id(cr)
+    update_analytic_line_fields_store_attribute(cr)
     migrate_account_analytic_distribution_post(cr)

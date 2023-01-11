@@ -333,22 +333,22 @@ class AccountInvoice(models.Model):
 
     amount_by_group = fields.Binary(string="Tax amount by group", compute='_amount_by_group', help="type: [(name, amount, base, formated amount, formated base)]")
     amount_untaxed = fields.Monetary(string='Untaxed Amount',
-        store=True, readonly=True, compute='_compute_amount', track_visibility='always')
+        store=False, readonly=True, compute='_compute_amount', track_visibility='always')
     amount_untaxed_signed = fields.Monetary(string='Untaxed Amount in Company Currency', currency_field='company_currency_id',
-        store=True, readonly=True, compute='_compute_amount')
+        store=False, readonly=True, compute='_compute_amount')
     amount_untaxed_invoice_signed = fields.Monetary(string='Untaxed Amount in Invoice Currency', currency_field='currency_id',
         readonly=True, compute='_compute_sign_taxes')
     amount_tax = fields.Monetary(string='Tax',
-        store=True, readonly=True, compute='_compute_amount')
+        store=False, readonly=True, compute='_compute_amount')
     amount_tax_signed = fields.Monetary(string='Tax in Invoice Currency', currency_field='currency_id',
         readonly=True, compute='_compute_sign_taxes')
     amount_total = fields.Monetary(string='Total',
-        store=True, readonly=True, compute='_compute_amount')
+        store=False, readonly=True, compute='_compute_amount')
     amount_total_signed = fields.Monetary(string='Total in Invoice Currency', currency_field='currency_id',
-        store=True, readonly=True, compute='_compute_amount',
+        store=False, readonly=True, compute='_compute_amount',
         help="Total amount in the currency of the invoice, negative for credit notes.")
     amount_total_company_signed = fields.Monetary(string='Total in Company Currency', currency_field='company_currency_id',
-        store=True, readonly=True, compute='_compute_amount',
+        store=False, readonly=True, compute='_compute_amount',
         help="Total amount in the currency of the company, negative for credit notes.")
     currency_id = fields.Many2one('res.currency', string='Currency',
         required=True, readonly=True, states={'draft': [('readonly', False)]},
@@ -362,27 +362,27 @@ class AccountInvoice(models.Model):
         required=True, readonly=True, states={'draft': [('readonly', False)]},
         default=lambda self: self.env['res.company']._company_default_get('account.invoice'))
 
-    reconciled = fields.Boolean(string='Paid/Reconciled', store=True, readonly=True, compute='_compute_residual',
+    reconciled = fields.Boolean(string='Paid/Reconciled', store=False, readonly=True, compute='_compute_residual',
         help="It indicates that the invoice has been paid and the journal entry of the invoice has been reconciled with one or several journal entries of payment.")
     partner_bank_id = fields.Many2one('res.partner.bank', string='Bank Account',
         help='Bank Account Number to which the invoice will be paid. A Company bank account if this is a Customer Invoice or Vendor Credit Note, otherwise a Partner bank account number.',
         readonly=True, states={'draft': [('readonly', False)]}) #Default value computed in default_get for out_invoices
 
     residual = fields.Monetary(string='Amount Due',
-        compute='_compute_residual', store=True, help="Remaining amount due.")
+        compute='_compute_residual', store=False, help="Remaining amount due.")
     residual_signed = fields.Monetary(string='Amount Due in Invoice Currency', currency_field='currency_id',
-        compute='_compute_residual', store=True, help="Remaining amount due in the currency of the invoice.")
+        compute='_compute_residual', store=False, help="Remaining amount due in the currency of the invoice.")
     residual_company_signed = fields.Monetary(string='Amount Due in Company Currency', currency_field='company_currency_id',
-        compute='_compute_residual', store=True, help="Remaining amount due in the currency of the company.")
+        compute='_compute_residual', store=False, help="Remaining amount due in the currency of the company.")
     payment_ids = fields.Many2many('account.payment', 'account_invoice_payment_rel', 'invoice_id', 'payment_id', string="Payments", copy=False, readonly=True)
-    payment_move_line_ids = fields.Many2many('account.move.line', string='Payment Move Lines', compute='_compute_payments', store=True)
+    payment_move_line_ids = fields.Many2many('account.move.line', string='Payment Move Lines', compute='_compute_payments', store=False)
     user_id = fields.Many2one('res.users', string='Salesperson', track_visibility='onchange',
         readonly=True, states={'draft': [('readonly', False)]},
         default=lambda self: self.env.user, copy=False)
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', oldname='fiscal_position',
         readonly=True, states={'draft': [('readonly', False)]})
     commercial_partner_id = fields.Many2one('res.partner', string='Commercial Entity', compute_sudo=True,
-        related='partner_id.commercial_partner_id', store=True, readonly=True,
+        related='partner_id.commercial_partner_id', store=False, readonly=True,
         help="The commercial entity that will be used on Journal Entries for this invoice")
 
     outstanding_credits_debits_widget = fields.Text(compute='_get_outstanding_info_JSON', groups="account.group_account_invoice")
@@ -401,7 +401,7 @@ class AccountInvoice(models.Model):
 
     #fields related to vendor bills automated creation by email
     source_email = fields.Char(string='Source Email', track_visibility='onchange')
-    vendor_display_name = fields.Char(compute='_get_vendor_display_info', store=True)  # store=True to enable sorting on that column
+    vendor_display_name = fields.Char(compute='_get_vendor_display_info', store=False)  # store=True to enable sorting on that column
     invoice_icon = fields.Char(compute='_get_vendor_display_info', store=False)
 
     _sql_constraints = [
@@ -1738,11 +1738,11 @@ class AccountInvoiceLine(models.Model):
         help="The income or expense account related to the selected product.")
     price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Product Price'))
     price_subtotal = fields.Monetary(string='Amount (without Taxes)',
-        store=True, readonly=True, compute='_compute_price', help="Total amount without taxes")
+        store=False, readonly=True, compute='_compute_price', help="Total amount without taxes")
     price_total = fields.Monetary(string='Amount (with Taxes)',
-        store=True, readonly=True, compute='_compute_price', help="Total amount with taxes")
+        store=False, readonly=True, compute='_compute_price', help="Total amount with taxes")
     price_subtotal_signed = fields.Monetary(string='Amount Signed', currency_field='company_currency_id',
-        store=True, readonly=True, compute='_compute_price',
+        store=False, readonly=True, compute='_compute_price',
         help="Total amount in the currency of the company, negative for credit note.")
     price_tax = fields.Monetary(string='Tax Amount', compute='_get_price_tax', store=False)
     quantity = fields.Float(string='Quantity', digits=dp.get_precision('Product Unit of Measure'),
@@ -1756,10 +1756,10 @@ class AccountInvoiceLine(models.Model):
         string='Analytic Account')
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
     company_id = fields.Many2one('res.company', string='Company',
-        related='invoice_id.company_id', store=True, readonly=True, related_sudo=False)
+        related='invoice_id.company_id', store=False, readonly=True, related_sudo=False)
     partner_id = fields.Many2one('res.partner', string='Partner',
-        related='invoice_id.partner_id', store=True, readonly=True, related_sudo=False)
-    currency_id = fields.Many2one('res.currency', related='invoice_id.currency_id', store=True, related_sudo=False, readonly=False)
+        related='invoice_id.partner_id', store=False, readonly=True, related_sudo=False)
+    currency_id = fields.Many2one('res.currency', related='invoice_id.currency_id', store=False, related_sudo=False, readonly=False)
     company_currency_id = fields.Many2one('res.currency', related='invoice_id.company_currency_id', readonly=True, related_sudo=False)
     is_rounding_line = fields.Boolean(string='Rounding Line', help='Is a rounding line in case of cash rounding.')
 
@@ -2018,9 +2018,9 @@ class AccountInvoiceTax(models.Model):
     amount_total = fields.Monetary(string="Amount Total", compute='_compute_amount_total')
     manual = fields.Boolean(default=True)
     sequence = fields.Integer(help="Gives the sequence order when displaying a list of invoice tax.")
-    company_id = fields.Many2one('res.company', string='Company', related='account_id.company_id', store=True, readonly=True)
-    currency_id = fields.Many2one('res.currency', related='invoice_id.currency_id', store=True, readonly=True)
-    base = fields.Monetary(string='Base', compute='_compute_base_amount', store=True)
+    company_id = fields.Many2one('res.company', string='Company', related='account_id.company_id', store=False, readonly=True)
+    currency_id = fields.Many2one('res.currency', related='invoice_id.currency_id', store=False, readonly=True)
+    base = fields.Monetary(string='Base', compute='_compute_base_amount', store=False)
 
     @api.depends('amount', 'amount_rounding')
     def _compute_amount_total(self):

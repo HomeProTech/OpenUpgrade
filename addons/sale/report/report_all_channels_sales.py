@@ -36,10 +36,10 @@ class PosSaleReport(models.Model):
                     so.user_id AS user_id,
                     pt.categ_id AS categ_id,
                     so.company_id AS company_id,
-                    sol.price_total / CASE COALESCE(so.currency_rate, 0) WHEN 0 THEN 1.0 ELSE so.currency_rate END AS price_total,
+                    sol.price_total AS price_total,
                     so.pricelist_id AS pricelist_id,
                     rp.country_id AS country_id,
-                    sol.price_subtotal / CASE COALESCE(so.currency_rate, 0) WHEN 0 THEN 1.0 ELSE so.currency_rate END AS price_subtotal,
+                    sol.price_subtotal AS price_subtotal,
                     (sol.product_uom_qty / u.factor * u2.factor) as product_qty,
                     so.analytic_account_id AS analytic_account_id,
                     so.team_id AS team_id
