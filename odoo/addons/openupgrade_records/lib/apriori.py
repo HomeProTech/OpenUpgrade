@@ -133,6 +133,15 @@ renamed_models = {
     'account.asset.asset': 'account.asset',
     'account.asset.depreciation.line': 'account.asset.line',
     'account.asset.category': 'account.asset.profile',
+    # enterprise
+    'account.batch.deposit': 'account.batch.payment',
+    'signature.item': 'sign.item',
+    'signature.item.party': 'sign.item.role',
+    'signature.item.type': 'sign.item.type',
+    'signature.item.value': 'sign.item.value',
+    'signature.request': 'sign.request',
+    'signature.request.item': 'sign.request.item',
+    'signature.request.template': 'sign.template'
 }
 
 # only used here for openupgrade_records analysis:
