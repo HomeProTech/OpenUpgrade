@@ -8,8 +8,9 @@ renamed_modules = {
     'mrp_repair': 'repair',
     'product_extended': 'mrp_bom_cost',
     #Enterprise
-    'account_batch_deposit':'account_batch_payment',
-    'website_sign':'sign',
+    'account_batch_deposit': 'account_batch_payment',
+    'website_sign': 'sign',
+    'mail_push': 'ocn_client',
     # OCA/account-budgeting
     'account_budget': 'account_budget_oca',
     # OCA/account-payment
