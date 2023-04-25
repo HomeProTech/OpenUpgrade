@@ -172,6 +172,33 @@ def fill_res_company_portal_confirmation(cr):
             SET portal_confirmation_sign = TRUE"""
         )
 
+def add_currency_rate_column(cr):
+    if not openupgrade.column_exists(
+            cr, 'sale_order', 'currency_rate'):
+        openupgrade.logged_query(
+            cr, """
+            ALTER TABLE sale_order
+            ADD currency_rate float
+            """
+        )
+        cr.execute(
+            """COMMENT ON COLUMN sale_order.currency_rate IS 'Currency Rate'
+            """
+        )
+        cr.execute(
+            """UPDATE sale_order
+                SET currency_rate = 1.0
+                WHERE 1=1
+            """
+        )
+        openupgrade.logged_query(
+            cr, """
+            UPDATE ir_model_fields SET store = true 
+            WHERE model = 'sale.order' AND name in ('currency_rate')
+            """,
+        )
+    
+   
 
 @openupgrade.migrate()
 def migrate(env, version):
@@ -197,3 +224,4 @@ def migrate(env, version):
             'sale.mail_template_data_notification_email_sale_order',
         ],
     )
+    add_currency_rate_column(env.cr)
