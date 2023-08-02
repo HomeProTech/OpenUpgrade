@@ -3,17 +3,17 @@
 
 """ Modules migration handling. """
 
-from collections import defaultdict
 import glob
 import logging
 import os
+from collections import defaultdict
 from os.path import join as opj
 
-from odoo.modules.module import get_resource_path
 import odoo.release as release
 import odoo.tools as tools
-from odoo.tools.parse_version import parse_version
+from odoo.modules.module import get_resource_path
 from odoo.tools import pycompat
+from odoo.tools.parse_version import parse_version
 
 if pycompat.PY2:
     import imp
@@ -173,6 +173,7 @@ class MigrationManager(object):
         versions = _get_migration_versions(pkg, stage)
 
         for version in versions:
+            # if ((version == "0.0.0" and stage == "end")  # parsed_installed_version < current_version)
             if ((version == "0.0.0" and parsed_installed_version < current_version)
                or parsed_installed_version < parse_version(convert_version(version)) <= current_version):
 
@@ -200,3 +201,4 @@ class MigrationManager(object):
                     finally:
                         if mod:
                             del mod
+                            

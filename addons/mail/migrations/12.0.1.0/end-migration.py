@@ -1,5 +1,7 @@
 # Copyright 2018 Eficent <http://www.eficent.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+import logging
+
 from openupgradelib import openupgrade
 from psycopg2.extensions import AsIs
 
@@ -7,15 +9,15 @@ from psycopg2.extensions import AsIs
 def fill_mail_tracking_value_track_sequence(env):
     env.cr.execute(
         """
-        SELECT DISTINCT mtv.field, mm.model
-        FROM mail_tracking_value mtv
-        INNER JOIN mail_message mm ON mtv.mail_message_id = mm.id
-        INNER JOIN ir_model_fields imf ON (
-            imf.name = mtv.field AND mm.model = imf.model)
-        WHERE mm.model IS NOT NULL AND imf.track_visibility IS NOT NULL AND
-            imf.track_visibility != 'false'
+        select distinct imf.name, imf.model
+        from mail_tracking_value mtv INNER join ir_model_fields imf
+        on ( mtv.model = imf.model and mtv.field = imf.name)
+        WHERE mtv.model IS NOT NULL
+        AND imf.track_visibility IS NOT NULL
+        AND imf.track_visibility != 'false'
         """
     )
+
     for field, model in env.cr.fetchall():
         if env.get(model) and field in list(env[model]._fields.keys()):
             sequence = getattr(env[model]._fields[field],
@@ -92,3 +94,4 @@ def migrate(env, version):
     fill_mail_thread_message_main_attachment_id(env)
     remove_activity_date_deadline_column(env)
     resubscribe_general_channel(env)
+    
