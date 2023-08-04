@@ -90,7 +90,9 @@ def resubscribe_general_channel(env):
 
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
-    fill_mail_tracking_value_track_sequence(env)
+     # [TPM] track sequence is a new field with defauult value set. This method does not
+    # find any rows with custom track sequence and just wastes time
+    # fill_mail_tracking_value_track_sequence(env)
     fill_mail_thread_message_main_attachment_id(env)
     remove_activity_date_deadline_column(env)
     resubscribe_general_channel(env)
