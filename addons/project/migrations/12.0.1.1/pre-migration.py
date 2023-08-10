@@ -4,11 +4,11 @@
 from openupgradelib import openupgrade
 from psycopg2 import sql
 
-column_copies = {
-    'project_project': [
-        ('analytic_account_id', None, None),
-    ],
-}
+# column_copies = {
+#     'project_project': [
+#         ('analytic_account_id', None, None),
+#     ],
+# }
 
 
 def compute_project_task_rating_last_value(env):
@@ -54,7 +54,8 @@ def fill_project_project_inherits_values(env):
 @openupgrade.migrate()
 def migrate(env, version):
     fill_project_project_inherits_values(env)
-    openupgrade.copy_columns(env.cr, column_copies)
+    # commenting below code as we are readding analytic_account_id field to proj in custom addons.
+    # openupgrade.copy_columns(env.cr, column_copies)
     compute_project_task_rating_last_value(env)
     openupgrade.set_xml_ids_noupdate_value(
         env, 'project', ['ir_cron_rating_project',
